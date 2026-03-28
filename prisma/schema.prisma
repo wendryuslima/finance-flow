@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CategoryType {
+  HOUSING
+  TRANSPORTATION
+  FOOD
+  ENTERTAINMENT
+  HEALTH
+  UTILITY
+  SALARY
+  EDUCATION
+  OTHER
+}
+
+enum StatusType {
+  PENDING
+  PAID
+  DEFEATED
+}
+
+model Accounts {
+  id          String       @id @default(uuid())
+  title       String
+  value       Decimal      @db.Decimal(10, 2)
+  maturity    String
+  category    CategoryType
+  status      StatusType
+  description String
+  createdAt   DateTime
+  updatedAt   DateTime
+}
