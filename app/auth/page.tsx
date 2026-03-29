@@ -1,7 +1,15 @@
+'use client'
+import { redirect } from "next/navigation"
+import { authClient } from "../_lib/auth-client"
 import { AuthHero } from "./components/auth-hero"
 import { AuthSignInCard } from "./components/auth-sign-in-card"
 
 const AuthPage = () => {
+  const {data: session} = authClient.useSession()
+
+  if(session) {
+    redirect  ("/")
+  }
   return (
     <main className="page-shell relative isolate min-h-screen overflow-hidden">
       <div

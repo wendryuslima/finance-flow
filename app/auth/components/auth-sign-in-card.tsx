@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { GoogleSignInButton } from "./google-sign-in-button"
 
 
 export function AuthSignInCard() {
@@ -40,19 +40,8 @@ export function AuthSignInCard() {
                
               </div>
 
-              <div className="space-y-3 flex">
-                
-                
-                <Button
-                  
-                  size="lg"
-                  className="h-12 w-full justify-center rounded-xl cursor-pointer bg-background/90"
-                >
-                   
-                  Continuar com Google
-                </Button>
-
-              
+              <div className="flex">
+                <GoogleSignInButton />
               </div>
             </section>
           </div>
