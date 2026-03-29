@@ -1,8 +1,13 @@
-import { ArrowRight, Plus } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
+import { DashboardNewAccountDialog } from "./dashboard-new-account-dialog";
+import { authClient } from "../_lib/auth-client";
+
 export const DashboardHeader = () => {
+  const userName = authClient.useSession()?.data?.user?.name || "Usuário";
+  const email = authClient.useSession()?.data?.user?.email || "";
   return (
     <header className="border-b border-border/70 bg-brand-950/50 px-4 py-5 sm:px-6">
       <div className="flex items-center justify-between gap-4">
@@ -27,22 +32,23 @@ export const DashboardHeader = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            className="h-9 rounded-xl cursor-pointer px-4 text-sm"
-            type="button"
-          >
-            <Plus className="h-4 w-4" />
-            Nova Conta
-          </Button>
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col">
+            <p className="text-sm font-medium text-foreground">{userName}</p>
+            <p className="text-xs text-foreground/60">{email}</p>
+          </div>
 
-          <Button
-            className="h-9 w-9 rounded-xl px-0"
-            type="button"
-            variant="ghost"
-          >
-            <ArrowRight className="h-4 w-4" />
-          </Button>
+          <div className="flex">
+            <DashboardNewAccountDialog />
+
+            <Button
+              className="h-9 w-9 rounded-xl px-0"
+              type="button"
+              variant="ghost"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </header>
