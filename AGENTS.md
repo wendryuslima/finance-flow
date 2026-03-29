@@ -55,6 +55,7 @@ Na tela de contas, haverá um card para cada registro. Esse card deve exibir:
 - Use `DAL` e `DTO` na camada de dados.
 - Coloque hooks na pasta `hooks`.
 - Coloque tipos compartilhados na pasta `types`.
+  -Use arrow function
 
 ## Componentes e UI
 
