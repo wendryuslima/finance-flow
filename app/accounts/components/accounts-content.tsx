@@ -34,7 +34,6 @@ export const AccountsContent = ({ accounts }: AccountsContentProps) => {
               Gerencie suas contas a pagar e receber
             </p>
           </div>
-          <DashboardNewAccountDialog />
         </div>
 
         {accounts.length === 0 ? (

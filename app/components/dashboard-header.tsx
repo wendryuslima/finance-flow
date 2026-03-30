@@ -1,21 +1,13 @@
 "use client";
-
-import { ArrowRight } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-
-import { DashboardNewAccountDialog } from "./dashboard-new-account-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authClient } from "../_lib/auth-client";
 
-interface DashboardHeaderProps {
-  onCreateAccount?: () => void;
-}
-
-export const DashboardHeader = ({ onCreateAccount }: DashboardHeaderProps) => {
+export const DashboardHeader = () => {
   const userName = authClient.useSession()?.data?.user?.name || "Usuário";
   const email = authClient.useSession()?.data?.user?.email || "";
+  const avatarUrl = authClient.useSession()?.data?.user?.image || "";
   return (
-    <header className="border-b border-border/70 bg-brand-950/50 px-4 py-5 sm:px-6">
+    <header className="border-b items-center  border-border/70 bg-brand-950/50 px-4 py-5 sm:px-6">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div
@@ -34,26 +26,22 @@ export const DashboardHeader = ({ onCreateAccount }: DashboardHeaderProps) => {
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               FinanceFlow
             </h1>
-            <p className="text-sm text-foreground/60">Gestao de Contas</p>
+            <p className="text-sm text-foreground/60">Gestão de Contas</p>
           </div>
         </div>
 
         <div className="flex flex-col items-center gap-3">
-          <div className="flex flex-col">
-            <p className="text-sm font-medium text-foreground">{userName}</p>
-            <p className="text-xs text-foreground/60">{email}</p>
-          </div>
-
-          <div className="flex">
-            <DashboardNewAccountDialog onSuccess={onCreateAccount} />
-
-            <Button
-              className="h-9 w-9 rounded-xl px-0"
-              type="button"
-              variant="ghost"
-            >
-              <ArrowRight className="h-4 w-4" />
-            </Button>
+          <div className="flex items-center gap-2 ">
+            <Avatar>
+              <AvatarImage src={avatarUrl} alt={userName} />
+              <AvatarFallback>
+                {userName.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+              <p className="text-sm font-medium text-foreground">{userName}</p>
+              <p className="text-xs text-foreground/60">{email}</p>
+            </div>
           </div>
         </div>
       </div>

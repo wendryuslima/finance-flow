@@ -1,4 +1,5 @@
 import { CategoryType, StatusType } from "@/app/generated/prisma/enums";
+import { coerceCurrencyValue, coerceDateValue } from "@/lib/formatters";
 import type { AccountRecord } from "@/types/accounts";
 import { z } from "zod";
 
@@ -77,8 +78,8 @@ export const getUpsertAccountDefaultValues = (
 ): UpsertAccountInput => ({
   id: account?.id ?? "",
   title: account?.title ?? "",
-  value: account?.value ?? "",
-  maturity: account?.maturity ?? "",
+  value: account?.value ? coerceCurrencyValue(account.value) : "",
+  maturity: account?.maturity ? coerceDateValue(account.maturity) : "",
   category: account?.category ?? "",
   status: account?.status ?? StatusType.PENDING,
   description: account?.description ?? "",

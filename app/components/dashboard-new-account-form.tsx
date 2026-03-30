@@ -35,6 +35,13 @@ import {
 } from "@/app/_actions/create-accounts/schema";
 import { upsertAccountAction } from "@/app/_actions/create-accounts";
 import type { AccountRecord } from "@/types/accounts";
+import {
+  coerceCurrencyValue,
+  coerceDateValue,
+  formatCurrencyDisplay,
+  normalizeCurrencyInput,
+  normalizeDateInput,
+} from "@/lib/formatters";
 
 interface DashboardNewAccountFormProps {
   account?: AccountRecord;
@@ -62,8 +69,8 @@ export const DashboardNewAccountForm = ({
     form.reset({
       id: accountId ?? "",
       title: accountTitle ?? "",
-      value: accountValue ?? "",
-      maturity: accountMaturity ?? "",
+      value: accountValue ? coerceCurrencyValue(accountValue) : "",
+      maturity: accountMaturity ? coerceDateValue(accountMaturity) : "",
       category: accountCategory ?? "",
       status: accountStatus ?? "PENDING",
       description: accountDescription ?? "",
@@ -125,51 +132,102 @@ export const DashboardNewAccountForm = ({
           <FormField
             control={form.control}
             name="value"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel className="text-sm font-medium text-foreground">
-                  Valor (R$)
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className="h-11 rounded-xl border-border bg-secondary/80 px-4 text-sm text-foreground placeholder:text-muted-foreground/80 focus-visible:ring-ring/30 dark:bg-secondary/80"
-                    inputMode="decimal"
-                    placeholder="0,00"
-                  />
-                </FormControl>
-                <div className="min-h-4">
-                  <FormMessage className="text-xs" />
-                </div>
-              </FormItem>
-            )}
+            render={({ field }) => {
+              const { ref, value, onChange, onBlur, name, ...rest } = field;
+              const displayValue = value ? formatCurrencyDisplay(value) : "";
+
+              return (
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-medium text-foreground">
+                    Valor (R$)
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      ref={ref}
+                      name={name}
+                      value={displayValue}
+                      onChange={(event) => {
+                        const normalizedValue = normalizeCurrencyInput(
+                          event.target.value
+                        );
+
+                        onChange(normalizedValue);
+                      }}
+                      onBlur={(event) => {
+                        const normalizedValue = normalizeCurrencyInput(
+                          event.target.value
+                        );
+
+                        onChange(normalizedValue);
+                        onBlur();
+                      }}
+                      className="h-11 rounded-xl border-border bg-secondary/80 px-4 text-sm text-foreground placeholder:text-muted-foreground/80 focus-visible:ring-ring/30 dark:bg-secondary/80"
+                      inputMode="decimal"
+                      placeholder="R$ 0,00"
+                      {...rest}
+                    />
+                  </FormControl>
+                  <div className="min-h-4">
+                    <FormMessage className="text-xs" />
+                  </div>
+                </FormItem>
+              );
+            }}
           />
 
           <FormField
             control={form.control}
             name="maturity"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel className="text-sm font-medium text-foreground">
-                  Vencimento
-                </FormLabel>
-                <div className="relative">
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="h-11 rounded-xl border-border bg-secondary/80 px-4 pr-11 text-sm text-foreground placeholder:text-muted-foreground/80 focus-visible:ring-ring/30 dark:bg-secondary/80"
-                      inputMode="numeric"
-                      maxLength={10}
-                      placeholder="dd/mm/aaaa"
-                    />
-                  </FormControl>
-                  <CalendarDays className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                </div>
-                <div className="min-h-4">
-                  <FormMessage className="text-xs" />
-                </div>
-              </FormItem>
-            )}
+            render={({ field }) => {
+              const { ref, value, onChange, onBlur, name, ...rest } = field;
+
+              return (
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-medium text-foreground">
+                    Vencimento
+                  </FormLabel>
+                  <div className="relative">
+                    <FormControl>
+                      <Input
+                        ref={ref}
+                        name={name}
+                        value={value ?? ""}
+                        onChange={(event) => {
+                          const normalizedValue = normalizeDateInput(
+                            event.target.value
+                          );
+
+                          onChange(normalizedValue);
+                        }}
+                        onBlur={(event) => {
+                          const normalizedValue = normalizeDateInput(
+                            event.target.value
+                          );
+
+                          if (normalizedValue.length === 10) {
+                            const coercedValue = coerceDateValue(normalizedValue);
+                            onChange(coercedValue || normalizedValue);
+                          } else {
+                            onChange(normalizedValue);
+                          }
+
+                          onBlur();
+                        }}
+                        className="h-11 rounded-xl border-border bg-secondary/80 px-4 pr-11 text-sm text-foreground placeholder:text-muted-foreground/80 focus-visible:ring-ring/30 dark:bg-secondary/80"
+                        inputMode="numeric"
+                        maxLength={10}
+                        placeholder="dd/mm/aaaa"
+                        {...rest}
+                      />
+                    </FormControl>
+                    <CalendarDays className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  </div>
+                  <div className="min-h-4">
+                    <FormMessage className="text-xs" />
+                  </div>
+                </FormItem>
+              );
+            }}
           />
         </div>
 
