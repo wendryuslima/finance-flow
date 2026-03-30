@@ -1,4 +1,5 @@
 import { CategoryType, StatusType } from "@/app/generated/prisma/enums";
+import type { AccountRecord } from "@/types/accounts";
 import { z } from "zod";
 
 export const categoryOptions = [
@@ -22,7 +23,8 @@ export const statusOptions = [
 const categoryValues = categoryOptions.map(({ value }) => value);
 const statusValues = statusOptions.map(({ value }) => value);
 
-export const createAccountSchema = z.object({
+export const upsertAccountSchema = z.object({
+  id: z.string().uuid({ message: "ID invalido." }).optional().or(z.literal("")),
   title: z
     .string()
     .trim()
@@ -64,13 +66,20 @@ export const createAccountSchema = z.object({
     .or(z.literal("")),
 });
 
-export type CreateAccountInput = z.infer<typeof createAccountSchema>;
+export type UpsertAccountInput = z.infer<typeof upsertAccountSchema>;
 
-export const createAccountDefaultValues: CreateAccountInput = {
-  title: "",
-  value: "",
-  maturity: "",
-  category: "",
-  status: StatusType.PENDING,
-  description: "",
-};
+type AccountFormSeed = Partial<
+  Pick<AccountRecord, "id" | "title" | "value" | "maturity" | "category" | "status" | "description">
+>;
+
+export const getUpsertAccountDefaultValues = (
+  account?: AccountFormSeed
+): UpsertAccountInput => ({
+  id: account?.id ?? "",
+  title: account?.title ?? "",
+  value: account?.value ?? "",
+  maturity: account?.maturity ?? "",
+  category: account?.category ?? "",
+  status: account?.status ?? StatusType.PENDING,
+  description: account?.description ?? "",
+});

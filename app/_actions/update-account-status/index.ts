@@ -16,8 +16,7 @@ export const updateAccountStatusAction = actionClient
   .action(async ({ parsedInput }) => {
     const account = await updateAccountStatus(parsedInput.id, parsedInput.status);
 
-    revalidatePath("/");
-    revalidatePath("/accounts");
+    revalidatePath("/", "layout");
 
     return { success: true, data: account };
   });

@@ -3,16 +3,15 @@
 import { revalidatePath } from "next/cache";
 
 import { actionClient } from "@/lib/safe-action";
-import { createAccountSchema } from "./schema";
-import { createAccount } from "@/app/_data-access/create-accounts";
+import { upsertAccountSchema } from "./schema";
+import { upsertAccount } from "@/app/_data-access/create-accounts";
 
-export const createAccountAction = actionClient
-  .inputSchema(createAccountSchema)
+export const upsertAccountAction = actionClient
+  .inputSchema(upsertAccountSchema)
   .action(async ({ parsedInput }) => {
-    const account = await createAccount(parsedInput);
+    const account = await upsertAccount(parsedInput);
 
-    revalidatePath("/");
-    revalidatePath("/accounts");
+    revalidatePath("/", "layout");
 
     return { success: true, data: account };
   });

@@ -2,12 +2,15 @@
 
 import { useAction } from "next-safe-action/hooks";
 import { Pencil, CheckCircle2 } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CategoryType, StatusType } from "@/app/generated/prisma/enums";
 import { categoryOptions } from "@/app/_actions/create-accounts/schema";
 import { updateAccountStatusAction } from "@/app/_actions/update-account-status";
+import { DashboardNewAccountDialog } from "@/app/components/dashboard-new-account-dialog";
+import type { AccountRecord } from "@/types/accounts";
 
 interface AccountCardProps {
   id: string;
@@ -17,8 +20,6 @@ interface AccountCardProps {
   category: CategoryType;
   status: StatusType;
   description?: string;
-  onEdit?: (id: string) => void;
-  onStatusUpdate?: () => void;
 }
 
 const getCategoryLabel = (category: string) => {
@@ -39,16 +40,16 @@ const getStatusLabel = (status: StatusType) => {
   }
 };
 
-const getStatusVariant = (status: StatusType): "default" | "secondary" | "destructive" | "outline" => {
+const getStatusBadgeClassName = (status: StatusType) => {
   switch (status) {
     case StatusType.PAID:
-      return "default";
+      return "status-success border-success/30 bg-success/12 text-success";
     case StatusType.PENDING:
-      return "secondary";
+      return "status-warning border-warning/30 bg-warning/12 text-warning";
     case StatusType.DEFEATED:
-      return "destructive";
+      return "status-danger border-destructive/30 bg-destructive/12 text-destructive";
     default:
-      return "outline";
+      return "border-border bg-secondary/60 text-foreground";
   }
 };
 
@@ -75,40 +76,43 @@ export const AccountCard = ({
   category,
   status,
   description,
-  onEdit,
-  onStatusUpdate,
 }: AccountCardProps) => {
   const { execute: markAsPaid, isExecuting: isMarkingAsPaid } = useAction(
-    updateAccountStatusAction,
-    {
-      onSuccess: () => {
-        onStatusUpdate?.();
-      },
-    }
+    updateAccountStatusAction
   );
+  const account: AccountRecord = {
+    id,
+    title,
+    value: typeof value === "string" ? value : String(value ?? ""),
+    maturity,
+    category,
+    status,
+    description: description ?? null,
+  };
 
   const handleMarkAsPaid = () => {
     markAsPaid({ id, status: StatusType.PAID });
   };
 
-  const handleEdit = () => {
-    onEdit?.(id);
-  };
-
   return (
     <Card className="w-full rounded-2xl border-border bg-card transition-colors hover:bg-card/80">
-      <CardHeader className="flex flex-row items-start justify-between pb-2">
+      <CardHeader className="pb-2">
         <div className="flex flex-col gap-1">
-          <CardTitle className="text-lg font-semibold text-foreground">
-            {title}
-          </CardTitle>
+          <div className="flex items-start justify-between gap-3">
+            <CardTitle className="flex-1 text-lg font-semibold text-foreground">
+              {title}
+            </CardTitle>
+            <Badge
+              variant="outline"
+              className={`shrink-0 rounded-full border px-3 py-1 text-xs font-semibold ${getStatusBadgeClassName(status)}`}
+            >
+              {getStatusLabel(status)}
+            </Badge>
+          </div>
           <span className="text-sm text-muted-foreground">
             {getCategoryLabel(category)}
           </span>
         </div>
-        <Badge variant={getStatusVariant(status)} className="ml-2">
-          {getStatusLabel(status)}
-        </Badge>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex items-center justify-between">
@@ -132,14 +136,14 @@ export const AccountCard = ({
             <CheckCircle2 className="mr-2 h-4 w-4" />
             {status === StatusType.PAID ? "Paga" : "Marcar como paga"}
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="rounded-xl"
-            onClick={handleEdit}
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
+          <DashboardNewAccountDialog
+            account={account}
+            trigger={
+              <Button variant="outline" size="sm" className="rounded-xl" type="button">
+                <Pencil className="h-4 w-4" />
+              </Button>
+            }
+          />
         </div>
       </CardContent>
     </Card>

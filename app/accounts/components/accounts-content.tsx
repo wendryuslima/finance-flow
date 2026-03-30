@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import type { AccountRecord } from "@/types/accounts";
 
@@ -18,23 +17,14 @@ interface AccountsContentProps {
 
 export const AccountsContent = ({ accounts }: AccountsContentProps) => {
   const { data: session } = authClient.useSession();
-  const router = useRouter();
 
   if (!session) {
     redirect("/auth");
   }
 
-  const handleRefresh = useCallback(() => {
-    router.refresh();
-  }, [router]);
-
-  const handleEdit = useCallback((id: string) => {
-    console.log("Edit account:", id);
-  }, []);
-
   return (
     <main className="page-shell min-h-screen">
-      <DashboardHeader onCreateAccount={handleRefresh} />
+      <DashboardHeader />
       <DashboardSidebar />
       <section className="px-4 py-4 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
@@ -44,14 +34,14 @@ export const AccountsContent = ({ accounts }: AccountsContentProps) => {
               Gerencie suas contas a pagar e receber
             </p>
           </div>
-          <DashboardNewAccountDialog onSuccess={handleRefresh} />
+          <DashboardNewAccountDialog />
         </div>
 
         {accounts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12">
             <p className="text-muted-foreground">Nenhuma conta encontrada.</p>
             <div className="mt-4">
-              <DashboardNewAccountDialog onSuccess={handleRefresh} />
+              <DashboardNewAccountDialog />
             </div>
           </div>
         ) : (
@@ -66,8 +56,6 @@ export const AccountsContent = ({ accounts }: AccountsContentProps) => {
                 category={account.category}
                 status={account.status}
                 description={account.description ?? undefined}
-                onEdit={handleEdit}
-                onStatusUpdate={handleRefresh}
               />
             ))}
           </div>

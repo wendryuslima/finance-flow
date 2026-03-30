@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarDays } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -27,35 +28,67 @@ import { Textarea } from "@/components/ui/textarea";
 
 import {
   categoryOptions,
-  createAccountDefaultValues,
-  createAccountSchema,
+  getUpsertAccountDefaultValues,
   statusOptions,
-  type CreateAccountInput,
+  upsertAccountSchema,
+  type UpsertAccountInput,
 } from "@/app/_actions/create-accounts/schema";
-import { createAccountAction } from "@/app/_actions/create-accounts";
+import { upsertAccountAction } from "@/app/_actions/create-accounts";
+import type { AccountRecord } from "@/types/accounts";
 
 interface DashboardNewAccountFormProps {
+  account?: AccountRecord;
   onSuccess?: () => void;
 }
 
 export const DashboardNewAccountForm = ({
+  account,
   onSuccess,
 }: DashboardNewAccountFormProps) => {
-  const form = useForm<CreateAccountInput>({
-    resolver: zodResolver(createAccountSchema),
-    defaultValues: createAccountDefaultValues,
+  const accountId = account?.id;
+  const accountTitle = account?.title;
+  const accountValue = account?.value;
+  const accountMaturity = account?.maturity;
+  const accountCategory = account?.category;
+  const accountStatus = account?.status;
+  const accountDescription = account?.description;
+  const isEditing = Boolean(account?.id);
+  const form = useForm<UpsertAccountInput>({
+    resolver: zodResolver(upsertAccountSchema),
+    defaultValues: getUpsertAccountDefaultValues(account),
   });
 
+  useEffect(() => {
+    form.reset({
+      id: accountId ?? "",
+      title: accountTitle ?? "",
+      value: accountValue ?? "",
+      maturity: accountMaturity ?? "",
+      category: accountCategory ?? "",
+      status: accountStatus ?? "PENDING",
+      description: accountDescription ?? "",
+    });
+  }, [
+    accountCategory,
+    accountDescription,
+    accountId,
+    accountMaturity,
+    accountStatus,
+    accountTitle,
+    accountValue,
+    form,
+  ]);
+
   const handleSuccess = () => {
-    form.reset();
+    form.reset(getUpsertAccountDefaultValues(account));
     onSuccess?.();
   };
 
-  const { execute, isExecuting } = useAction(createAccountAction, {
+  const { execute, isExecuting } = useAction(upsertAccountAction, {
     onSuccess: handleSuccess,
   });
 
-  const onSubmit = (data: CreateAccountInput) => {
+  const onSubmit = (data: UpsertAccountInput) => {
     execute(data);
   };
 
@@ -251,7 +284,7 @@ export const DashboardNewAccountForm = ({
             type="submit"
             disabled={isExecuting}
           >
-            {isExecuting ? "Adicionando..." : "Adicionar"}
+            {isExecuting ? "Salvando..." : isEditing ? "Salvar" : "Adicionar"}
           </Button>
         </div>
       </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import { Plus, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -16,13 +16,21 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { DashboardNewAccountForm } from "./dashboard-new-account-form";
+import type { AccountRecord } from "@/types/accounts";
 
 interface DashboardNewAccountDialogProps {
+  account?: AccountRecord;
   onSuccess?: () => void;
+  trigger?: ReactNode;
 }
 
-export const DashboardNewAccountDialog = ({ onSuccess }: DashboardNewAccountDialogProps) => {
+export const DashboardNewAccountDialog = ({
+  account,
+  onSuccess,
+  trigger,
+}: DashboardNewAccountDialogProps) => {
   const [open, setOpen] = useState(false);
+  const isEditing = Boolean(account?.id);
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
@@ -36,13 +44,15 @@ export const DashboardNewAccountDialog = ({ onSuccess }: DashboardNewAccountDial
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button
-          className="h-9 cursor-pointer rounded-xl px-4 text-sm"
-          type="button"
-        >
-          <Plus className="h-4 w-4" />
-          Nova Conta
-        </Button>
+        {trigger ?? (
+          <Button
+            className="h-9 cursor-pointer rounded-xl px-4 text-sm"
+            type="button"
+          >
+            <Plus className="h-4 w-4" />
+            Nova Conta
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent
@@ -53,10 +63,12 @@ export const DashboardNewAccountDialog = ({ onSuccess }: DashboardNewAccountDial
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <DialogTitle className="text-xl font-semibold text-foreground">
-                Nova Conta
+                {isEditing ? "Editar Conta" : "Nova Conta"}
               </DialogTitle>
               <DialogDescription className="sr-only">
-                Preencha os campos abaixo para registrar uma nova conta.
+                {isEditing
+                  ? "Atualize os campos abaixo para editar a conta."
+                  : "Preencha os campos abaixo para registrar uma nova conta."}
               </DialogDescription>
             </div>
 
@@ -75,7 +87,7 @@ export const DashboardNewAccountDialog = ({ onSuccess }: DashboardNewAccountDial
 
         <ScrollArea className="min-h-0 flex-1">
           <div className="px-5 py-4">
-            <DashboardNewAccountForm onSuccess={handleSuccess} />
+            <DashboardNewAccountForm account={account} onSuccess={handleSuccess} />
           </div>
         </ScrollArea>
       </DialogContent>
