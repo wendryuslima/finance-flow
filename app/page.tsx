@@ -27,7 +27,6 @@ const HomePage = () => {
     <main className="page-shell min-h-screen">
       <DashboardHeader />
       <DashboardSidebar />
-
       <section className="px-4 py-4 sm:px-6">
         <div className="grid gap-4 md:grid-cols-3">
           {dashboardMetrics.map((metric) => (

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Plus, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -16,9 +17,24 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { DashboardNewAccountForm } from "./dashboard-new-account-form";
 
-export const DashboardNewAccountDialog = () => {
+interface DashboardNewAccountDialogProps {
+  onSuccess?: () => void;
+}
+
+export const DashboardNewAccountDialog = ({ onSuccess }: DashboardNewAccountDialogProps) => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+  };
+
+  const handleSuccess = () => {
+    setOpen(false);
+    onSuccess?.();
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           className="h-9 cursor-pointer rounded-xl px-4 text-sm"
@@ -59,7 +75,7 @@ export const DashboardNewAccountDialog = () => {
 
         <ScrollArea className="min-h-0 flex-1">
           <div className="px-5 py-4">
-            <DashboardNewAccountForm />
+            <DashboardNewAccountForm onSuccess={handleSuccess} />
           </div>
         </ScrollArea>
       </DialogContent>

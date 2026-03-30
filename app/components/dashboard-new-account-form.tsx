@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarDays } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useAction } from "next-safe-action/hooks";
 
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
@@ -25,20 +26,36 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import {
-  dashboardNewAccountCategoryOptions,
-  dashboardNewAccountFormDefaultValues,
-  dashboardNewAccountFormSchema,
-  dashboardNewAccountStatusOptions,
-  type DashboardNewAccountFormValues,
-} from "./dashboard-new-account-form-schema";
+  categoryOptions,
+  createAccountDefaultValues,
+  createAccountSchema,
+  statusOptions,
+  type CreateAccountInput,
+} from "@/app/_actions/create-accounts/schema";
+import { createAccountAction } from "@/app/_actions/create-accounts";
 
-export const DashboardNewAccountForm = () => {
-  const form = useForm<DashboardNewAccountFormValues>({
-    resolver: zodResolver(dashboardNewAccountFormSchema),
-    defaultValues: dashboardNewAccountFormDefaultValues,
+interface DashboardNewAccountFormProps {
+  onSuccess?: () => void;
+}
+
+export const DashboardNewAccountForm = ({
+  onSuccess,
+}: DashboardNewAccountFormProps) => {
+  const form = useForm<CreateAccountInput>({
+    resolver: zodResolver(createAccountSchema),
+    defaultValues: createAccountDefaultValues,
   });
 
-  const onSubmit = () => {};
+  const { execute, isExecuting } = useAction(createAccountAction, {
+    onSuccess: () => {
+      form.reset();
+      onSuccess?.();
+    },
+  });
+
+  const onSubmit = (data: CreateAccountInput) => {
+    execute(data);
+  };
 
   return (
     <Form {...form}>
@@ -139,7 +156,7 @@ export const DashboardNewAccountForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="rounded-xl border border-border bg-popover text-popover-foreground">
-                  {dashboardNewAccountCategoryOptions.map((option) => (
+                  {categoryOptions.map((option) => (
                     <SelectItem
                       key={option.value}
                       className="pl-3"
@@ -175,7 +192,7 @@ export const DashboardNewAccountForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="rounded-xl border border-border bg-popover text-popover-foreground">
-                  {dashboardNewAccountStatusOptions.map((option) => (
+                  {statusOptions.map((option) => (
                     <SelectItem
                       key={option.value}
                       className="pl-3"
@@ -227,8 +244,12 @@ export const DashboardNewAccountForm = () => {
             </Button>
           </DialogClose>
 
-          <Button className="h-10 flex-1 rounded-xl cursor-pointer" type="submit">
-            Adicionar
+          <Button
+            className="h-10 flex-1 rounded-xl cursor-pointer"
+            type="submit"
+            disabled={isExecuting}
+          >
+            {isExecuting ? "Adicionando..." : "Adicionar"}
           </Button>
         </div>
       </form>

@@ -13,7 +13,7 @@ const navigationItems = [
     label: "Dashboard",
   },
   {
-    href: "/contas",
+    href: "/accounts",
     icon: CircleDollarSign,
     label: "Contas",
   },
