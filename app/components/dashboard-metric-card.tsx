@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { DashboardMetric } from "@/types/dashboard";
+import { formatCurrency } from "@/lib/utils";
 
 interface DashboardMetricCardProps {
   metric: DashboardMetric;
@@ -30,11 +31,6 @@ const metricIcon = {
   pending: Clock3,
   overdue: AlertCircle,
 } satisfies Record<DashboardMetric["tone"], React.ComponentType<{ className?: string }>>;
-
-const currencyFormatter = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
 
 export const DashboardMetricCard = ({ metric }: DashboardMetricCardProps) => {
   const Icon = metricIcon[metric.tone];
@@ -59,7 +55,7 @@ export const DashboardMetricCard = ({ metric }: DashboardMetricCardProps) => {
       <CardContent className="space-y-1 px-4 pb-4 pt-0">
         <p className="text-sm text-foreground/70">{metric.label}</p>
         <CardTitle className="text-3xl font-semibold tracking-tight text-foreground">
-          {currencyFormatter.format(metric.value)}
+          {formatCurrency(metric.value)}
         </CardTitle>
       </CardContent>
     </Card>

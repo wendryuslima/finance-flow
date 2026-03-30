@@ -1,16 +1,29 @@
 "use client";
 
 import { useAction } from "next-safe-action/hooks";
-import { Pencil, CheckCircle2 } from "lucide-react";
+import { Pencil, CheckCircle2, Trash2 } from "lucide-react";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CategoryType, StatusType } from "@/app/generated/prisma/enums";
 import { categoryOptions } from "@/app/_actions/create-accounts/schema";
 import { updateAccountStatusAction } from "@/app/_actions/update-account-status";
+import { deleteAccountAction } from "@/app/_actions/delete-account";
 import { DashboardNewAccountDialog } from "@/app/components/dashboard-new-account-dialog";
 import type { AccountRecord } from "@/types/accounts";
+import { formatCurrency } from "@/lib/utils";
 
 interface AccountCardProps {
   id: string;
@@ -62,10 +75,7 @@ const formatValue = (value: string | number | unknown) => {
   } else {
     numValue = 0;
   }
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(numValue);
+  return formatCurrency(numValue);
 };
 
 export const AccountCard = ({
@@ -80,6 +90,9 @@ export const AccountCard = ({
   const { execute: markAsPaid, isExecuting: isMarkingAsPaid } = useAction(
     updateAccountStatusAction
   );
+  const { execute: removeAccount, isExecuting: isDeletingAccount } = useAction(
+    deleteAccountAction
+  );
   const account: AccountRecord = {
     id,
     title,
@@ -92,6 +105,10 @@ export const AccountCard = ({
 
   const handleMarkAsPaid = () => {
     markAsPaid({ id, status: StatusType.PAID });
+  };
+
+  const handleDeleteAccount = () => {
+    removeAccount({ id });
   };
 
   return (
@@ -131,7 +148,7 @@ export const AccountCard = ({
             size="sm"
             className="flex-1 rounded-xl"
             onClick={handleMarkAsPaid}
-            disabled={status === StatusType.PAID || isMarkingAsPaid}
+            disabled={status === StatusType.PAID || isMarkingAsPaid || isDeletingAccount}
           >
             <CheckCircle2 className="mr-2 h-4 w-4" />
             {status === StatusType.PAID ? "Paga" : "Marcar como paga"}
@@ -139,11 +156,48 @@ export const AccountCard = ({
           <DashboardNewAccountDialog
             account={account}
             trigger={
-              <Button variant="outline" size="sm" className="rounded-xl" type="button">
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-xl"
+                type="button"
+                disabled={isDeletingAccount}
+              >
                 <Pencil className="h-4 w-4" />
               </Button>
             }
           />
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="destructive"
+                size="sm"
+                className="rounded-xl"
+                type="button"
+                disabled={isDeletingAccount || isMarkingAsPaid}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Excluir conta?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Essa ação removerá a conta &quot;{title}&quot; permanentemente.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={isDeletingAccount}>Cancelar</AlertDialogCancel>
+                <AlertDialogAction
+                  variant="destructive"
+                  disabled={isDeletingAccount}
+                  onClick={handleDeleteAccount}
+                >
+                  {isDeletingAccount ? "Excluindo..." : "Excluir"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </CardContent>
     </Card>

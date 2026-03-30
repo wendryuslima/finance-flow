@@ -31,3 +31,10 @@ function toClassName(value: ClassValue): string {
 export function cn(...inputs: ClassValue[]) {
   return inputs.map(toClassName).filter(Boolean).join(" ");
 }
+
+export const formatCurrency = (value: number) => {
+  return Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
+};
