@@ -1,10 +1,10 @@
 export type DashboardAccountStatus = "paid" | "pending" | "overdue";
 
 export interface DashboardMetric {
-  id: string;
+  id: DashboardAccountStatus;
   label: string;
-  countLabel: string;
-  value: string;
+  count: number;
+  value: number;
   tone: DashboardAccountStatus;
 }
 

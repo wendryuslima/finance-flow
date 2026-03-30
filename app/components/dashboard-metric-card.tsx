@@ -31,8 +31,14 @@ const metricIcon = {
   overdue: AlertCircle,
 } satisfies Record<DashboardMetric["tone"], React.ComponentType<{ className?: string }>>;
 
+const currencyFormatter = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
+});
+
 export const DashboardMetricCard = ({ metric }: DashboardMetricCardProps) => {
   const Icon = metricIcon[metric.tone];
+  const countLabel = `${metric.count} ${metric.count === 1 ? "conta" : "contas"}`;
 
   return (
     <Card className={`gap-0 border py-0 ${cardToneClassName[metric.tone]}`}>
@@ -45,7 +51,7 @@ export const DashboardMetricCard = ({ metric }: DashboardMetricCardProps) => {
           </div>
 
           <CardDescription className="pt-1 text-xs font-medium text-right text-foreground/70">
-            {metric.countLabel}
+            {countLabel}
           </CardDescription>
         </div>
       </CardHeader>
@@ -53,7 +59,7 @@ export const DashboardMetricCard = ({ metric }: DashboardMetricCardProps) => {
       <CardContent className="space-y-1 px-4 pb-4 pt-0">
         <p className="text-sm text-foreground/70">{metric.label}</p>
         <CardTitle className="text-3xl font-semibold tracking-tight text-foreground">
-          {metric.value}
+          {currencyFormatter.format(metric.value)}
         </CardTitle>
       </CardContent>
     </Card>

@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { actionClient } from "@/lib/safe-action";
 import { z } from "zod";
 import { updateAccountStatus } from "@/app/_data-access/update-account-status";
@@ -14,5 +15,9 @@ export const updateAccountStatusAction = actionClient
   .inputSchema(updateStatusSchema)
   .action(async ({ parsedInput }) => {
     const account = await updateAccountStatus(parsedInput.id, parsedInput.status);
+
+    revalidatePath("/");
+    revalidatePath("/accounts");
+
     return { success: true, data: account };
   });

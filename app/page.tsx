@@ -1,13 +1,13 @@
-"use client";
-
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
-import { authClient } from "./_lib/auth-client";
+import { auth } from "@/lib/auth";
+import { getDashboardMetrics } from "@/app/_data-access/get-dashboard-metrics";
+
 import { DashboardBalanceChart } from "./components/dashboard-balance-chart";
 import { DashboardCategoryChart } from "./components/dashboard-category-chart";
 import {
   dashboardCategoryData,
-  dashboardMetrics,
   dashboardStatusDistribution,
   dashboardTrend,
 } from "./components/dashboard-data";
@@ -16,8 +16,11 @@ import { DashboardInsightsCard } from "./components/dashboard-insights-card";
 import { DashboardMetricCard } from "./components/dashboard-metric-card";
 import { DashboardSidebar } from "./components/dashboard-sidebar";
 
-const HomePage = () => {
-  const { data: session } = authClient.useSession();
+const HomePage = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const dashboardMetrics = await getDashboardMetrics();
 
   if (!session) {
     redirect("/auth");
