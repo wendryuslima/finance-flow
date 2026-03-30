@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -5,7 +7,11 @@ import { Button } from "@/components/ui/button";
 import { DashboardNewAccountDialog } from "./dashboard-new-account-dialog";
 import { authClient } from "../_lib/auth-client";
 
-export const DashboardHeader = () => {
+interface DashboardHeaderProps {
+  onCreateAccount?: () => void;
+}
+
+export const DashboardHeader = ({ onCreateAccount }: DashboardHeaderProps) => {
   const userName = authClient.useSession()?.data?.user?.name || "Usuário";
   const email = authClient.useSession()?.data?.user?.email || "";
   return (
@@ -39,7 +45,7 @@ export const DashboardHeader = () => {
           </div>
 
           <div className="flex">
-            <DashboardNewAccountDialog />
+            <DashboardNewAccountDialog onSuccess={onCreateAccount} />
 
             <Button
               className="h-9 w-9 rounded-xl px-0"

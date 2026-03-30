@@ -1,9 +1,11 @@
 "use client";
 
+import { startTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarDays } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
@@ -46,11 +48,18 @@ export const DashboardNewAccountForm = ({
     defaultValues: createAccountDefaultValues,
   });
 
+  const router = useRouter();
+
+  const handleSuccess = () => {
+    form.reset();
+    startTransition(() => {
+      router.refresh();
+    });
+    onSuccess?.();
+  };
+
   const { execute, isExecuting } = useAction(createAccountAction, {
-    onSuccess: () => {
-      form.reset();
-      onSuccess?.();
-    },
+    onSuccess: handleSuccess,
   });
 
   const onSubmit = (data: CreateAccountInput) => {

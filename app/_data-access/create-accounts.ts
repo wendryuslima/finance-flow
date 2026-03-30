@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { CategoryType, StatusType } from "@/app/generated/prisma/enums";
 import type { CreateAccountInput } from "@/app/_actions/create-accounts/schema";
+import { revalidatePath } from "next/cache";
 
 export const createAccount = async (data: CreateAccountInput) => {
   const valueFormatted = data.value.replace(",", ".");
@@ -17,6 +18,6 @@ export const createAccount = async (data: CreateAccountInput) => {
       updatedAt: new Date(),
     },
   });
-
+  revalidatePath("/accounts");
   return account;
 };
