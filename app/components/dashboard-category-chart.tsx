@@ -8,12 +8,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { DashboardCategoryPoint } from "@/types/dashboard";
 
 interface DashboardCategoryChartProps {
@@ -34,7 +29,7 @@ export const DashboardCategoryChart = ({
     <Card className="gap-0 border border-border/70 bg-card/80 py-0">
       <CardHeader className="border-b border-border/60 px-5 py-4">
         <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
-          Gastos por Categoria
+          Gastos por categoria
         </CardTitle>
       </CardHeader>
 
@@ -44,7 +39,10 @@ export const DashboardCategoryChart = ({
           config={chartConfig}
           initialDimension={{ width: 900, height: 240 }}
         >
-          <BarChart data={data} margin={{ left: 12, right: 8, top: 8, bottom: 0 }}>
+          <BarChart
+            data={data}
+            margin={{ left: 12, right: 8, top: 8, bottom: 0 }}
+          >
             <defs>
               <linearGradient id="categoryBarFill" x1="0" x2="1" y1="0" y2="0">
                 <stop offset="0%" stopColor="var(--primary)" />

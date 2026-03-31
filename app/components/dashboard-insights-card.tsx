@@ -52,7 +52,7 @@ export const DashboardInsightsCard = ({ data }: DashboardInsightsCardProps) => {
     <Card className="gap-0 border border-border/70 bg-card/80 py-0">
       <CardHeader className="border-b border-border/60 px-5 py-4">
         <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
-          Distribuicao por Status
+          Distribuição por Status
         </CardTitle>
       </CardHeader>
 

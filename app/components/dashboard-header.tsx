@@ -1,11 +1,9 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { authClient } from "../_lib/auth-client";
+import Image from "next/image";
+
+import { DashboardUserInfo } from "./dashboard-user-info";
 
 export const DashboardHeader = () => {
-  const userName = authClient.useSession()?.data?.user?.name || "Usuário";
-  const email = authClient.useSession()?.data?.user?.email || "";
-  const avatarUrl = authClient.useSession()?.data?.user?.image || "";
   return (
     <header className="border-b items-center  border-border/70 bg-brand-950/50 px-4 py-5 sm:px-6">
       <div className="flex items-center justify-between gap-4">
@@ -19,7 +17,12 @@ export const DashboardHeader = () => {
               boxShadow: "0 12px 30px var(--overlay-primary)",
             }}
           >
-            F
+            <Image
+              src="/logo-removebg-preview.png"
+              alt="FinanceFlow"
+              width={200}
+              height={200}
+            />
           </div>
 
           <div className="space-y-0.5">
@@ -31,18 +34,7 @@ export const DashboardHeader = () => {
         </div>
 
         <div className="flex flex-col items-center gap-3">
-          <div className="flex items-center gap-2 ">
-            <Avatar>
-              <AvatarImage src={avatarUrl} alt={userName} />
-              <AvatarFallback>
-                {userName.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <p className="text-sm font-medium text-foreground">{userName}</p>
-              <p className="text-xs text-foreground/60">{email}</p>
-            </div>
-          </div>
+          <DashboardUserInfo />
         </div>
       </div>
     </header>

@@ -112,7 +112,7 @@ export const DashboardNewAccountForm = ({
           render={({ field }) => (
             <FormItem className="space-y-2">
               <FormLabel className="text-sm font-medium text-foreground">
-                Titulo
+                Título
               </FormLabel>
               <FormControl>
                 <Input
@@ -309,7 +309,7 @@ export const DashboardNewAccountForm = ({
           render={({ field }) => (
             <FormItem className="space-y-2">
               <FormLabel className="text-sm font-medium text-foreground">
-                Descricao (opcional)
+                Descrição (opcional)
               </FormLabel>
               <FormControl>
                 <Textarea

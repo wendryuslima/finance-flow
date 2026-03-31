@@ -26,7 +26,7 @@ export function AuthSignInCard() {
               </h1>
 
               <p className="max-w-sm text-base leading-7 text-background/70">
-                Acesse seu painel com seguranca e continue o controle das suas
+                Acesse seu painel com segurança e continue o controle das suas
                 contas.
               </p>
             </section>

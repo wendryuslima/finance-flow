@@ -8,12 +8,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { DashboardTrendPoint } from "@/types/dashboard";
 
 interface DashboardBalanceChartProps {
@@ -27,14 +22,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const DashboardBalanceChart = ({
-  data,
-}: DashboardBalanceChartProps) => {
+export const DashboardBalanceChart = ({ data }: DashboardBalanceChartProps) => {
   return (
     <Card className="gap-0 border border-border/70 bg-card/80 py-0">
       <CardHeader className="flex flex-row items-center justify-between border-b border-border/60 px-5 py-4">
         <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
-          Evolucao Mensal
+          Evolução mensal
         </CardTitle>
         <div className="rounded-full border border-destructive/20 bg-destructive/10 px-3 py-1 text-xs font-medium text-destructive">
           vs - 5.2%

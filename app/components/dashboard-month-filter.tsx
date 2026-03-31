@@ -33,7 +33,7 @@ export const DashboardMonthFilter = () => {
       <SelectTrigger
         aria-label="Selecionar mês"
         size="sm"
-        className="h-8 min-w-[8rem] rounded-lg border-border/80 bg-background/70 px-3 text-sm"
+        className="h-8 w-full min-w-0 rounded-lg border-border/80 bg-background/70 px-3 text-sm sm:min-w-[8rem]"
       >
         <SelectValue />
       </SelectTrigger>

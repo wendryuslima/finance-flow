@@ -7,7 +7,7 @@ import { updateAccountStatus } from "@/app/_data-access/update-account-status";
 import { StatusType } from "@/app/generated/prisma/enums";
 
 const updateStatusSchema = z.object({
-  id: z.string().uuid({ message: "ID invalido." }),
+  id: z.string().uuid({ message: "ID inválido." }),
   status: z.enum([StatusType.PENDING, StatusType.PAID, StatusType.DEFEATED]),
 });
 

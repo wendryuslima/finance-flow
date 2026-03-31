@@ -4,12 +4,12 @@ import { z } from "zod";
 export const dashboardNewAccountCategoryOptions = [
   { label: "Moradia", value: CategoryType.HOUSING },
   { label: "Transporte", value: CategoryType.TRANSPORTATION },
-  { label: "Alimentacao", value: CategoryType.FOOD },
+  { label: "Alimentação", value: CategoryType.FOOD },
   { label: "Lazer", value: CategoryType.ENTERTAINMENT },
-  { label: "Saude", value: CategoryType.HEALTH },
+  { label: "Saúde", value: CategoryType.HEALTH },
   { label: "Utilidades", value: CategoryType.UTILITY },
-  { label: "Salario", value: CategoryType.SALARY },
-  { label: "Educacao", value: CategoryType.EDUCATION },
+  { label: "Salário", value: CategoryType.SALARY },
+  { label: "Educação", value: CategoryType.EDUCATION },
   { label: "Outros", value: CategoryType.OTHER },
 ] as const;
 
@@ -28,14 +28,14 @@ export const dashboardNewAccountFormSchema = z.object({
   title: z
     .string()
     .trim()
-    .min(1, { message: "Informe o titulo da conta." })
-    .max(120, { message: "O titulo deve ter no maximo 120 caracteres." }),
+    .min(1, { message: "Informe o título da conta." })
+    .max(120, { message: "O título deve ter no máximo 120 caracteres." }),
   value: z
     .string()
     .trim()
     .min(1, { message: "Informe o valor da conta." })
     .regex(/^\d+(?:[.,]\d{1,2})?$/, {
-      message: "Use um valor valido, como 120,00.",
+      message: "Use um valor válido, como 120,00.",
     }),
   maturity: z
     .string()
@@ -49,19 +49,19 @@ export const dashboardNewAccountFormSchema = z.object({
     .trim()
     .min(1, { message: "Selecione uma categoria." })
     .refine((value) => categoryValues.includes(value as CategoryType), {
-      message: "Selecione uma categoria valida.",
+      message: "Selecione uma categoria válida.",
     }),
   status: z
     .string()
     .trim()
     .min(1, { message: "Selecione um status." })
     .refine((value) => statusValues.includes(value as StatusType), {
-      message: "Selecione um status valido.",
+      message: "Selecione um status válido.",
     }),
   description: z
     .string()
     .trim()
-    .max(280, { message: "A descricao deve ter no maximo 280 caracteres." })
+    .max(280, { message: "A descrição deve ter no máximo 280 caracteres." })
     .optional()
     .or(z.literal("")),
 });

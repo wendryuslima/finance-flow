@@ -29,8 +29,8 @@ export const DashboardSidebar = ({ onCreateAccount }: DashboardHeaderProps) => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex w-full items-center justify-between border-border/70 bg-brand-950/35 px-4 py-3 sm:px-6">
-      <div className="flex items-center gap-2">
+    <nav className="flex w-full flex-col gap-3 border-border/70 bg-brand-950/35 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div className="flex flex-wrap items-center gap-2">
         {navigationItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -51,8 +51,10 @@ export const DashboardSidebar = ({ onCreateAccount }: DashboardHeaderProps) => {
         })}
       </div>
 
-      <div className="flex items-center gap-2">
-        <DashboardMonthFilter />
+      <div className="flex w-full items-center gap-2 sm:w-auto">
+        <div className="min-w-0 flex-1 sm:flex-none">
+          <DashboardMonthFilter />
+        </div>
         <DashboardNewAccountDialog onSuccess={onCreateAccount} />
       </div>
     </nav>
