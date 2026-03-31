@@ -1,4 +1,9 @@
 import { StatusType } from "@/app/generated/prisma/enums";
+import {
+  buildMaturityMonthFilter,
+  getCurrentMonthValue,
+  type MonthFilterValue,
+} from "@/lib/months";
 import { prisma } from "@/lib/prisma";
 import type { DashboardMetric } from "@/types/dashboard";
 
@@ -29,9 +34,19 @@ const dashboardMetricOrder = [
   StatusType.DEFEATED,
 ] as const;
 
-export const getDashboardMetrics = async (): Promise<DashboardMetric[]> => {
+type GetDashboardMetricsParams = {
+  month?: MonthFilterValue;
+};
+
+export const getDashboardMetrics = async ({
+  month,
+}: GetDashboardMetricsParams = {}): Promise<DashboardMetric[]> => {
+  const targetMonth = month ?? getCurrentMonthValue();
+  const maturityFilter = buildMaturityMonthFilter(targetMonth);
+
   const groupedAccounts = await prisma.accounts.groupBy({
     by: ["status"],
+    where: maturityFilter ? { maturity: maturityFilter } : undefined,
     _count: {
       _all: true,
     },

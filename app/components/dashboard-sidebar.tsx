@@ -6,6 +6,7 @@ import { CircleDollarSign, LayoutDashboard } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { DashboardNewAccountDialog } from "./dashboard-new-account-dialog";
+import { DashboardMonthFilter } from "./dashboard-month-filter";
 
 interface DashboardHeaderProps {
   onCreateAccount?: () => void;
@@ -28,7 +29,7 @@ export const DashboardSidebar = ({ onCreateAccount }: DashboardHeaderProps) => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex justify-between w-full border-border/70 bg-brand-950/35 px-4 py-3 sm:px-6">
+    <nav className="flex w-full items-center justify-between border-border/70 bg-brand-950/35 px-4 py-3 sm:px-6">
       <div className="flex items-center gap-2">
         {navigationItems.map((item) => {
           const Icon = item.icon;
@@ -50,7 +51,8 @@ export const DashboardSidebar = ({ onCreateAccount }: DashboardHeaderProps) => {
         })}
       </div>
 
-      <div className="flex">
+      <div className="flex items-center gap-2">
+        <DashboardMonthFilter />
         <DashboardNewAccountDialog onSuccess={onCreateAccount} />
       </div>
     </nav>

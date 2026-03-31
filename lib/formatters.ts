@@ -1,4 +1,5 @@
 import { format, isValid, parse, parseISO } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 const CURRENCY_DISPLAY = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -12,6 +13,10 @@ const parseLocalizedNumber = (value: string) => {
 
   const normalized = value.replace(/\./g, "").replace(/,/g, ".");
   return Number(normalized);
+};
+
+export const toFixedCurrency = (value: number) => {
+  return Number(value.toFixed(2));
 };
 
 export const formatCurrencyDisplay = (value: string) => {
@@ -54,6 +59,11 @@ const DATE_FORMAT = "dd/MM/yyyy";
 
 export const formatDateToInput = (date: Date) => {
   return format(date, DATE_FORMAT);
+};
+
+export const formatMonthLabel = (date: Date) => {
+  const formatted = format(date, "MMM", { locale: ptBR }).replace(".", "");
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
 };
 
 export const parseDateString = (value: string) => {

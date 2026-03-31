@@ -44,7 +44,7 @@ export const DashboardCategoryChart = ({
           config={chartConfig}
           initialDimension={{ width: 900, height: 240 }}
         >
-          <BarChart data={data} margin={{ left: -16, right: 8, top: 8, bottom: 0 }}>
+          <BarChart data={data} margin={{ left: 12, right: 8, top: 8, bottom: 0 }}>
             <defs>
               <linearGradient id="categoryBarFill" x1="0" x2="1" y1="0" y2="0">
                 <stop offset="0%" stopColor="var(--primary)" />
@@ -63,6 +63,7 @@ export const DashboardCategoryChart = ({
               tickFormatter={(value) => `${value}`}
               tickLine={false}
               tickMargin={10}
+              width={48}
             />
             <ChartTooltip
               content={<ChartTooltipContent indicator="dot" />}

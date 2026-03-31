@@ -58,9 +58,9 @@ const getStatusBadgeClassName = (status: StatusType) => {
     case StatusType.PAID:
       return "status-success border-success/30 bg-success/12 text-success";
     case StatusType.PENDING:
-      return "status-warning border-warning/30 bg-warning/12 text-warning";
+      return "status-warning  bg-warning/12 text-warning";
     case StatusType.DEFEATED:
-      return "status-danger border-destructive/30 bg-destructive/12 text-destructive";
+      return "border-destructive/30 bg-destructive/12 text-red-500";
     default:
       return "border-border bg-secondary/60 text-foreground";
   }
@@ -88,11 +88,10 @@ export const AccountCard = ({
   description,
 }: AccountCardProps) => {
   const { execute: markAsPaid, isExecuting: isMarkingAsPaid } = useAction(
-    updateAccountStatusAction
+    updateAccountStatusAction,
   );
-  const { execute: removeAccount, isExecuting: isDeletingAccount } = useAction(
-    deleteAccountAction
-  );
+  const { execute: removeAccount, isExecuting: isDeletingAccount } =
+    useAction(deleteAccountAction);
   const account: AccountRecord = {
     id,
     title,
@@ -133,14 +132,18 @@ export const AccountCard = ({
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-foreground">{formatValue(value)}</span>
+          <span className="text-2xl font-bold text-foreground">
+            {formatValue(value)}
+          </span>
         </div>
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">Vencimento</span>
           <span className="font-medium text-foreground">{maturity}</span>
         </div>
         {description && (
-          <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
+          <p className="text-sm text-muted-foreground line-clamp-2">
+            {description}
+          </p>
         )}
         <div className="flex gap-2 pt-2">
           <Button
@@ -148,7 +151,9 @@ export const AccountCard = ({
             size="sm"
             className="flex-1 rounded-xl"
             onClick={handleMarkAsPaid}
-            disabled={status === StatusType.PAID || isMarkingAsPaid || isDeletingAccount}
+            disabled={
+              status === StatusType.PAID || isMarkingAsPaid || isDeletingAccount
+            }
           >
             <CheckCircle2 className="mr-2 h-4 w-4" />
             {status === StatusType.PAID ? "Paga" : "Marcar como paga"}
@@ -183,11 +188,14 @@ export const AccountCard = ({
               <AlertDialogHeader>
                 <AlertDialogTitle>Excluir conta?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Essa ação removerá a conta &quot;{title}&quot; permanentemente.
+                  Essa ação removerá a conta &quot;{title}&quot;
+                  permanentemente.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel disabled={isDeletingAccount}>Cancelar</AlertDialogCancel>
+                <AlertDialogCancel disabled={isDeletingAccount}>
+                  Cancelar
+                </AlertDialogCancel>
                 <AlertDialogAction
                   variant="destructive"
                   disabled={isDeletingAccount}
