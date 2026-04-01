@@ -5,6 +5,7 @@
   "scripts": {
     "auth:generate": "npx auth@latest generate --config ./lib/auth.ts",
     "dev": "next dev",
+    "postinstall": "prisma generate",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
