@@ -31,7 +31,6 @@ model Accounts {
   value       Decimal      @db.Decimal(10, 2)
   maturity    String
   category    CategoryType
-  quantity     Int
   status      StatusType
   description String
   createdAt   DateTime
