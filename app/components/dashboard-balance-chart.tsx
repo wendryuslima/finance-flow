@@ -29,9 +29,6 @@ export const DashboardBalanceChart = ({ data }: DashboardBalanceChartProps) => {
         <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
           Evolução mensal
         </CardTitle>
-        <div className="rounded-full border border-destructive/20 bg-destructive/10 px-3 py-1 text-xs font-medium text-destructive">
-          vs - 5.2%
-        </div>
       </CardHeader>
 
       <CardContent className="px-4 py-5">

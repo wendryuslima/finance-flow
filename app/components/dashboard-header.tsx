@@ -10,7 +10,7 @@ export const DashboardHeader = () => {
         <div className="flex items-center gap-3">
           <div
             aria-hidden="true"
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-base font-semibold text-primary-foreground"
+            className="relative flex h-10 w-10 items-center justify-center overflow-visible rounded-xl text-primary-foreground"
             style={{
               backgroundImage:
                 "linear-gradient(135deg, var(--primary), var(--accent))",
@@ -20,8 +20,10 @@ export const DashboardHeader = () => {
             <Image
               src="/logo-removebg-preview.png"
               alt="FinanceFlow"
-              width={200}
-              height={200}
+              fill
+              sizes="200px"
+              className="origin-center scale-125 object-contain"
+              priority
             />
           </div>
 

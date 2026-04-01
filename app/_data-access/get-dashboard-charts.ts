@@ -10,10 +10,8 @@ import type {
 } from "@/types/dashboard";
 import { formatMonthLabel, parseDateString, toFixedCurrency } from "@/lib/formatters";
 import {
-  ALL_MONTHS_VALUE,
   buildMaturityMonthFilter,
   getCurrentMonthValue,
-  getMonthIndex,
   type MonthFilterValue,
 } from "@/lib/months";
 import { prisma } from "@/lib/prisma";
@@ -55,7 +53,7 @@ export const getDashboardCharts = async ({
 
   const where = maturityFilter ? { maturity: maturityFilter } : undefined;
 
-  const [statusGroups, categoryGroups, accounts] = await Promise.all([
+  const [statusGroups, categoryGroups, trendAccounts] = await Promise.all([
     prisma.accounts.groupBy({
       by: ["status"],
       where,
@@ -71,7 +69,6 @@ export const getDashboardCharts = async ({
       },
     }),
     prisma.accounts.findMany({
-      where,
       select: {
         value: true,
         maturity: true,
@@ -107,7 +104,7 @@ export const getDashboardCharts = async ({
     })
   );
 
-  const accountEntries = accounts
+  const trendAccountEntries = trendAccounts
     .map((account) => {
       const parsedDate = parseDateString(account.maturity);
 
@@ -126,32 +123,17 @@ export const getDashboardCharts = async ({
 
   const monthlyTotals = new Map<string, number>();
 
-  accountEntries.forEach(({ date, value }) => {
+  trendAccountEntries.forEach(({ date, value }) => {
     const monthKey = format(date, MONTH_KEY_FORMAT);
     const previous = monthlyTotals.get(monthKey) ?? 0;
 
     monthlyTotals.set(monthKey, previous + value);
   });
 
-  const fallbackMonth =
-    targetMonth === ALL_MONTHS_VALUE ? getCurrentMonthValue() : targetMonth;
+  const baseDate = startOfMonth(new Date());
 
-  const fallbackDate = startOfMonth(
-    new Date(new Date().getFullYear(), getMonthIndex(fallbackMonth), 1)
-  );
-
-  const latestAccountDate = accountEntries.reduce((latest, current) => {
-    if (current.date > latest) {
-      return current.date;
-    }
-
-    return latest;
-  }, fallbackDate);
-
-  const baseDate = startOfMonth(latestAccountDate);
-
-  const monthsRange = Array.from({ length: 6 }, (_, index) =>
-    subMonths(baseDate, 5 - index)
+  const monthsRange = Array.from({ length: 5 }, (_, index) =>
+    subMonths(baseDate, 4 - index)
   );
 
   const trend: DashboardTrendPoint[] = monthsRange.map((monthDate) => {

@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Finance Flow",
   description: "Gerencie suas finanças de forma simples e eficiente.",
+  icons: {
+    icon: "/logo-removebg-preview.png",
+  },
 };
 
 export default function RootLayout({
