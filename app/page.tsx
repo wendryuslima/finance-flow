@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 
-import { auth } from "@/lib/auth";
 import { getDashboardCharts } from "@/app/_data-access/get-dashboard-charts";
 import { getDashboardMetrics } from "@/app/_data-access/get-dashboard-metrics";
+import { getCurrentSession } from "@/lib/auth-session";
 import { resolveMonthParam } from "@/lib/months";
 
 import { DashboardBalanceChart } from "./components/dashboard-balance-chart";
@@ -20,9 +19,7 @@ type HomePageProps = {
 };
 
 const HomePage = async ({ searchParams }: HomePageProps = {}) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getCurrentSession();
 
   if (!session) {
     redirect("/auth");

@@ -1,0 +1,14 @@
+ALTER TABLE "Accounts"
+ADD COLUMN "userId" TEXT;
+
+ALTER TABLE "Accounts"
+ALTER COLUMN "createdAt" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "updatedAt" SET DEFAULT CURRENT_TIMESTAMP;
+
+CREATE INDEX "Accounts_userId_idx" ON "Accounts"("userId");
+
+ALTER TABLE "Accounts"
+ADD CONSTRAINT "Accounts_userId_fkey"
+FOREIGN KEY ("userId") REFERENCES "user"("id")
+ON DELETE CASCADE
+ON UPDATE CASCADE;

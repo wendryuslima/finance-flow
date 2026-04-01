@@ -14,6 +14,7 @@ import {
   getCurrentMonthValue,
   type MonthFilterValue,
 } from "@/lib/months";
+import { requireCurrentUserId } from "@/lib/auth-session";
 import { prisma } from "@/lib/prisma";
 
 const statusMapping: Record<
@@ -48,27 +49,34 @@ type GetDashboardChartsParams = {
 export const getDashboardCharts = async ({
   month,
 }: GetDashboardChartsParams = {}) => {
+  const userId = await requireCurrentUserId();
   const targetMonth = month ?? getCurrentMonthValue();
   const maturityFilter = buildMaturityMonthFilter(targetMonth);
 
-  const where = maturityFilter ? { maturity: maturityFilter } : undefined;
+  const groupedWhere = {
+    userId,
+    ...(maturityFilter ? { maturity: maturityFilter } : {}),
+  };
 
   const [statusGroups, categoryGroups, trendAccounts] = await Promise.all([
     prisma.accounts.groupBy({
       by: ["status"],
-      where,
+      where: groupedWhere,
       _sum: {
         value: true,
       },
     }),
     prisma.accounts.groupBy({
       by: ["category"],
-      where,
+      where: groupedWhere,
       _sum: {
         value: true,
       },
     }),
     prisma.accounts.findMany({
+      where: {
+        userId,
+      },
       select: {
         value: true,
         maturity: true,
