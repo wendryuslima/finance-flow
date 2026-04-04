@@ -169,8 +169,7 @@ export const AccountCard = ({
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-xl"
-                type="button"
+                className="rounded-xl cursor-pointer"
                 disabled={isDeletingAccount}
               >
                 <Pencil className="h-4 w-4" />
@@ -182,8 +181,7 @@ export const AccountCard = ({
               <Button
                 variant="destructive"
                 size="sm"
-                className="rounded-xl"
-                type="button"
+                className="rounded-xl cursor-pointer"
                 disabled={isDeletingAccount || isMarkingAsPaid}
               >
                 <Trash2 className="h-4 w-4" />
