@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CircleDollarSign, LayoutDashboard } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import { DashboardNewAccountDialog } from "./dashboard-new-account-dialog";
 import { DashboardMonthFilter } from "./dashboard-month-filter";
 

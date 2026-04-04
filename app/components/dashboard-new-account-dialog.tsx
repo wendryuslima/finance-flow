@@ -3,7 +3,7 @@
 import { type ReactNode, useState } from "react";
 import { Plus, X } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -12,8 +12,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from "@/app/components/ui/dialog";
+import { ScrollArea } from "@/app/components/ui/scroll-area";
 
 import { DashboardNewAccountForm } from "./dashboard-new-account-form";
 import type { AccountRecord } from "@/types/accounts";

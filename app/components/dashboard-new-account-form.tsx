@@ -6,8 +6,8 @@ import { CalendarDays } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 
-import { Button } from "@/components/ui/button";
-import { DialogClose } from "@/components/ui/dialog";
+import { Button } from "@/app/components/ui/button";
+import { DialogClose } from "@/app/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -15,16 +15,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "@/app/components/ui/form";
+import { Input } from "@/app/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/app/components/ui/select";
+import { Textarea } from "@/app/components/ui/textarea";
 
 import {
   categoryOptions,

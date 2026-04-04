@@ -13,10 +13,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+} from "@/app/components/ui/alert-dialog";
+import { Badge } from "@/app/components/ui/badge";
+import { Button } from "@/app/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
 import { CategoryType, StatusType } from "@/app/generated/prisma/enums";
 import { categoryOptions } from "@/app/_actions/create-accounts/schema";
 import { updateAccountStatusAction } from "@/app/_actions/update-account-status";

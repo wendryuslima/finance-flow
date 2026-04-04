@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/app/components/ui/card";
 import type { DashboardMetric } from "@/types/dashboard";
 import { formatCurrency } from "@/lib/utils";
 
@@ -30,7 +30,10 @@ const metricIcon = {
   paid: CheckCircle2,
   pending: Clock3,
   overdue: AlertCircle,
-} satisfies Record<DashboardMetric["tone"], React.ComponentType<{ className?: string }>>;
+} satisfies Record<
+  DashboardMetric["tone"],
+  React.ComponentType<{ className?: string }>
+>;
 
 export const DashboardMetricCard = ({ metric }: DashboardMetricCardProps) => {
   const Icon = metricIcon[metric.tone];

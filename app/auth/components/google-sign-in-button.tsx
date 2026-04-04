@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { authClient } from "@/app/_lib/auth-client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 
 export function GoogleSignInButton() {
   const [isPending, setIsPending] = useState(false);

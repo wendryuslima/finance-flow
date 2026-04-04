@@ -7,13 +7,13 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/ui/chart";
+} from "@/app/components/ui/chart";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/app/components/ui/card";
 import type { DashboardStatusDistributionPoint } from "@/types/dashboard";
 
 interface DashboardInsightsCardProps {
