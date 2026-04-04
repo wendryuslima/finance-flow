@@ -42,6 +42,7 @@ import {
   normalizeCurrencyInput,
   normalizeDateInput,
 } from "@/lib/formatters";
+import { toast } from "sonner";
 
 interface DashboardNewAccountFormProps {
   account?: AccountRecord;
@@ -96,7 +97,16 @@ export const DashboardNewAccountForm = ({
   });
 
   const onSubmit = (data: UpsertAccountInput) => {
-    execute(data);
+    try {
+      toast.success(
+        `Conta ${isEditing ? "atualizada" : "adicionada"} com sucesso!`,
+      );
+      execute(data);
+    } catch {
+      toast.error(
+        "Ocorreu um erro ao salvar a conta. Por favor, tente novamente.",
+      );
+    }
   };
 
   return (
@@ -148,14 +158,14 @@ export const DashboardNewAccountForm = ({
                       value={displayValue}
                       onChange={(event) => {
                         const normalizedValue = normalizeCurrencyInput(
-                          event.target.value
+                          event.target.value,
                         );
 
                         onChange(normalizedValue);
                       }}
                       onBlur={(event) => {
                         const normalizedValue = normalizeCurrencyInput(
-                          event.target.value
+                          event.target.value,
                         );
 
                         onChange(normalizedValue);
@@ -194,18 +204,19 @@ export const DashboardNewAccountForm = ({
                         value={value ?? ""}
                         onChange={(event) => {
                           const normalizedValue = normalizeDateInput(
-                            event.target.value
+                            event.target.value,
                           );
 
                           onChange(normalizedValue);
                         }}
                         onBlur={(event) => {
                           const normalizedValue = normalizeDateInput(
-                            event.target.value
+                            event.target.value,
                           );
 
                           if (normalizedValue.length === 10) {
-                            const coercedValue = coerceDateValue(normalizedValue);
+                            const coercedValue =
+                              coerceDateValue(normalizedValue);
                             onChange(coercedValue || normalizedValue);
                           } else {
                             onChange(normalizedValue);

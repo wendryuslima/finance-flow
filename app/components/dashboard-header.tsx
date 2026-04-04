@@ -14,7 +14,6 @@ export const DashboardHeader = () => {
             style={{
               backgroundImage:
                 "linear-gradient(135deg, var(--primary), var(--accent))",
-              boxShadow: "0 12px 30px var(--overlay-primary)",
             }}
           >
             <Image
@@ -31,7 +30,7 @@ export const DashboardHeader = () => {
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               FinanceFlow
             </h1>
-            <p className="text-sm text-foreground/60">Gestão de Contas</p>
+            <p className="text-sm text-foreground/60">Gestão de contas</p>
           </div>
         </div>
 

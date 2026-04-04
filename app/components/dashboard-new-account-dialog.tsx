@@ -45,12 +45,9 @@ export const DashboardNewAccountDialog = ({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {trigger ?? (
-          <Button
-            className="h-9 cursor-pointer rounded-xl px-4 text-sm"
-            type="button"
-          >
+          <Button className="h-9 cursor-pointer  px-4 text-sm">
             <Plus className="h-4 w-4" />
-            Nova Conta
+            Nova conta
           </Button>
         )}
       </DialogTrigger>
@@ -87,7 +84,10 @@ export const DashboardNewAccountDialog = ({
 
         <ScrollArea className="min-h-0 flex-1">
           <div className="px-5 py-4">
-            <DashboardNewAccountForm account={account} onSuccess={handleSuccess} />
+            <DashboardNewAccountForm
+              account={account}
+              onSuccess={handleSuccess}
+            />
           </div>
         </ScrollArea>
       </DialogContent>
