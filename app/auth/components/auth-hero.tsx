@@ -1,22 +1,17 @@
+import Image from "next/image";
+
 export function AuthHero() {
   return (
     <section className="relative flex min-h-[260px] overflow-hidden bg-brand-950 p-8 sm:p-10 lg:min-h-[640px] lg:items-center lg:justify-center lg:p-12">
-      <div
-        aria-hidden="true"
-        className="auth-orb -right-10 top-8 h-40 w-40"
-        style={{ background: "var(--overlay-primary)" }}
-      />
-
-      <div
-        aria-hidden="true"
-        className="auth-orb -bottom-8 -left-6 h-32 w-32"
-        style={{ background: "var(--overlay-accent)" }}
-      />
-
       <div className="relative flex h-full w-full items-center justify-center">
         <div className="flex flex-col items-center gap-6 text-center">
-          <div className="brand-badge h-24 w-24 rounded-[2rem] text-4xl shadow-[0_24px_80px_var(--overlay-primary)]">
-            <span className="font-semibold">F</span>
+          <div className="brand-badge rounded-xl h-24 w-24 rounded-[2rem] text-4xl ">
+            <Image
+              height={300}
+              width={300}
+              src="/logo-removebg-preview.png"
+              alt="Finance Flow"
+            />
           </div>
 
           <div className="space-y-2">
@@ -32,5 +27,5 @@ export function AuthHero() {
         </div>
       </div>
     </section>
-  )
+  );
 }

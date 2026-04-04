@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 
 import { authClient } from "../_lib/auth-client";
+import { redirect, useRouter } from "next/navigation";
 
 interface DashboardUserInfoProps {
   className?: string;
@@ -24,12 +25,26 @@ export const DashboardUserInfo = ({
   className,
   orientation = "horizontal",
 }: DashboardUserInfoProps) => {
+  const router = useRouter();
   const session = authClient.useSession();
   const userName = session?.data?.user?.name?.trim() || "Usuário";
   const userEmail = session?.data?.user?.email?.trim() || "";
 
   const avatarUrl = session?.data?.user?.image || "";
   const fallbackInitial = userName.charAt(0).toUpperCase() || "U";
+
+  if (!session) {
+    redirect("/auth");
+  }
+
+  const handleSignOut = async () => {
+    try {
+      await authClient.signOut();
+      router.replace("/auth");
+    } catch (error) {
+      console.error("Erro ao sair:", error);
+    }
+  };
 
   return (
     <div
@@ -64,7 +79,7 @@ export const DashboardUserInfo = ({
           <DropdownMenuSeparator />
           <DropdownMenuItem
             variant="destructive"
-            onSelect={() => authClient.signOut()}
+            onSelect={handleSignOut}
             className="gap-2"
           >
             <LogOut size={16} />

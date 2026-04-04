@@ -1,21 +1,11 @@
-import { GoogleSignInButton } from "./google-sign-in-button"
-
+import { GoogleSignInButton } from "./google-sign-in-button";
 
 export function AuthSignInCard() {
   return (
     <section className="flex h-full bg-foreground text-background">
       <div className="flex w-full flex-col p-8 sm:p-10 lg:p-12">
         <header className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-           
-          </div>
-
-          <a
-            href="#"
-            className="text-sm font-medium text-background/60 transition-colors hover:text-background"
-          >
-            Precisa de ajuda?
-          </a>
+          <div className="flex items-center gap-3"></div>
         </header>
 
         <div className="flex flex-1 flex-col justify-center py-10 lg:py-0">
@@ -36,8 +26,6 @@ export function AuthSignInCard() {
                 <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
                   Entrar na sua conta
                 </h2>
-
-               
               </div>
 
               <div className="flex">
@@ -52,5 +40,5 @@ export function AuthSignInCard() {
         </footer>
       </div>
     </section>
-  )
+  );
 }
